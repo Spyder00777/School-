@@ -1,0 +1,91 @@
+#include <iostream>
+#include <string> 
+#include <iomanip>
+#include <cmath>
+#include <cstdlib>
+#include <ctime>
+
+using namespace std;
+
+int rollDie()
+{
+	return rand() % 6 + 1;
+}
+
+int playOneGame()
+{
+	int Guess;
+	cout << "What is your guess for the dice roll?" << endl;
+	cin >> Guess;
+	while (Guess < 1 || Guess > 6)
+	{
+		cout << "Guess must be between 1 and 6!"<< endl;
+		cout << "What is your guess for the dice roll?" << endl;
+		cin >> Guess;
+	}
+	int DiceRoll_1 = rollDie();
+	int DiceRoll_2 = rollDie();
+	int DiceRoll_3 = rollDie();
+	cout << "The rolls were " << DiceRoll_1 << ", "<< DiceRoll_2 << ", and " << DiceRoll_3 << ".  Your guess was " << Guess << endl;
+	if (DiceRoll_1 == Guess || DiceRoll_2 == Guess || DiceRoll_3 == Guess)
+	{
+		cout << "You Won" << endl;
+		return 1;
+	}
+	else
+	{
+		cout << "You lost" << endl;
+		return -1;
+	}
+}
+
+void Display(float Bank)
+{
+	cout << "You have " << Bank << " dollars" << endl;
+}
+
+int main()
+{
+	srand(time(0));
+	int Bank = 100;
+	int Wager = 0;
+	int Con = 1;
+	int winner = 0;
+	int loser = 0;
+
+	while ((Con != 0))
+	{
+		cout << "How Much would you like to bet? " << endl;
+		cin >> Wager;
+		if ((Wager > Bank) || (Wager < 1))
+		{
+			cout << "Wager not acceptible" << endl;
+			cout << "Your current ballance is " << Bank << endl;
+			cout << "Enter an acceptible wager" << endl;
+			cin >> Wager;
+		}
+		int win = playOneGame();
+		if(win == 1)
+		{
+			Bank += Wager;
+			winner ++;
+		}
+		else
+		{
+			Bank -= Wager;
+			loser ++;
+		}
+		if (Bank != 0)
+		{	
+			Display(Bank);
+			cout << "If you would like to stop playing enter 0, if not enter any other ingerger"<< endl;
+			cin >> Con;
+		}
+		else
+		{
+			break; 
+		}
+	}
+	Display(Bank);
+	cout << "You won " << winner << " times and lost " << loser << " times." << endl;
+}
